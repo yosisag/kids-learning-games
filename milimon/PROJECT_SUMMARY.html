@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סיכום פרויקט — מילימון 🎴</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Heebo",system-ui,sans-serif; background:#0f1420; color:#dce3f0; direction:rtl; line-height:1.7; padding:40px 20px; }
+  .wrap { max-width:900px; margin:0 auto; }
+  h1 { font-size:36px; background:linear-gradient(90deg,#ffd23e,#ff7a00); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:6px; }
+  .sub { color:#8fa1c0; margin-bottom:34px; }
+  h2 { font-size:22px; color:#5ec1ff; margin:36px 0 14px; padding-right:12px; border-right:4px solid #5ec1ff; }
+  h2.orange { color:#ffb444; border-color:#ffb444; }
+  h2.green { color:#7de07d; border-color:#7de07d; }
+  h2.pink { color:#ff8fa3; border-color:#ff8fa3; }
+  h2.purple { color:#a78bfa; border-color:#a78bfa; }
+  table { width:100%; border-collapse:collapse; margin:10px 0; font-size:15px; }
+  th { background:#1b2438; color:#5ec1ff; padding:10px 14px; text-align:right; }
+  td { padding:10px 14px; border-bottom:1px solid #232f47; vertical-align:top; }
+  tr:hover td { background:#161d2e; }
+  code, .code { background:#1b2438; color:#7de07d; padding:2px 8px; border-radius:6px; font-family:Menlo,monospace; font-size:13px; direction:ltr; display:inline-block; }
+  pre.code { display:block; padding:14px; overflow-x:auto; margin:8px 0; }
+  .box { background:#161d2e; border:1px solid #232f47; border-radius:14px; padding:18px 22px; margin:12px 0; }
+  .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; background:#161d2e; border-radius:14px; padding:22px; margin:12px 0; }
+  .step { background:linear-gradient(180deg,#1e2a44,#182238); border:1px solid #31415f; border-radius:12px; padding:10px 18px; font-weight:700; text-align:center; }
+  .step small { display:block; font-weight:400; color:#8fa1c0; font-size:12px; }
+  .arr { color:#ffb444; font-size:22px; font-weight:900; }
+  ul { padding-right:22px; }
+  li { margin:6px 0; }
+  .tag { display:inline-block; background:#1b2438; border-radius:99px; padding:1px 12px; font-size:13px; margin-left:6px; }
+  .ok { color:#7de07d; } .warn { color:#ffb444; } .info { color:#5ec1ff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎴 מילימון — משחק קריאה בסגנון פוקימון</h1>
+  <div class="sub">נבנה: 5 ביולי 2026 · קובץ אחד, ללא אינטרנט · לגיל 5–7 · הכנה לכיתה א׳</div>
+
+  <h2>🗺️ ארכיטקטורה — זרימת המשחק</h2>
+  <div class="flow">
+    <div class="step">🏠 מסך בית<small>לוגו + אלבום + התחלה</small></div>
+    <div class="arr">←</div>
+    <div class="step">🗺️ מפת הרפתקה<small>24 שלבים, נעילה הדרגתית</small></div>
+    <div class="arr">←</div>
+    <div class="step">🎮 שלב<small>5 שאלות = 5 פוקדורים</small></div>
+    <div class="arr">←</div>
+    <div class="step">🎁 חבילת קלפים<small>היפוך קלף + קונפטי</small></div>
+    <div class="arr">←</div>
+    <div class="step">🎴 אלבום<small>24 מילימונים לאיסוף</small></div>
+  </div>
+
+  <h2 class="orange">🧩 רכיבים</h2>
+  <table>
+    <tr><th>רכיב</th><th>מה הוא עושה</th></tr>
+    <tr><td><b>מנוע שאלות</b></td><td>5 סוגים: זיהוי אותיות · זיהוי הברות · שמע-ובחר מילה · קרא-ומצא תמונה · בניית מילה מהברות</td></tr>
+    <tr><td><b>סולם קושי</b></td><td>שלבים 1–3 אותיות → 4–6 הברות → 7–10 שמיעה → 11–14 קריאה → 15–18 בנייה → 19–24 מיקס "אלופים"</td></tr>
+    <tr><td><b>מחולל מפלצות SVG</b></td><td>24 מילימונים ייחודיים (5 סוגים: אש/מים/עשב/חשמל/קסם) שנוצרים בקוד — בלי תמונות חיצוניות</td></tr>
+    <tr><td><b>מערכת קלפים</b></td><td>נדירויות (רגיל/נדיר/אגדי עם מסגרת קשת מסתובבת), כפילויות = כוכבים, 4 עותקים = קלף זהב 👑</td></tr>
+    <tr><td><b>קול</b></td><td>הקראה בעברית (Web Speech API, קול he-IL) + אפקטים מסונתזים ב-WebAudio. כפתור השתקה 🔇 לרגישות חושית</td></tr>
+    <tr><td><b>שמירה</b></td><td>localStorage — התקדמות, כוכבים ואוסף נשמרים במכשיר</td></tr>
+  </table>
+
+  <h2 class="orange">🚀 גרסה 2 (5.7.2026) — שדרוג גרפי ומסכים חדשים</h2>
+  <table>
+    <tr><th>חדש</th><th>פירוט</th></tr>
+    <tr><td><b>רקעים חיים</b></td><td>שמש מסתובבת, עננים, גבעות SVG, חלקיקים מרחפים — ערכת נושא שונה לכל עולם (יער/אגם/הר געש/ארמון)</td></tr>
+    <tr><td><b>חבר למסע</b></td><td>מסך בחירת סטרטר (להבי/מימון/עלעל) — החבר מלווה במשחק, קופץ כשמצליחים ומעודד בבועת דיבור</td></tr>
+    <tr><td><b>מפה עם 4 עולמות</b></td><td>אזורים מעוצבים עם שביל מנוקד, שלבי בוס עם כתר, פרצוף המפלצת על שלבים שהושלמו</td></tr>
+    <tr><td><b>תגי אלוף</b></td><td>סיום עולם = מסך טקס עם מדליה מסתובבת; התגים מוצגים בבית</td></tr>
+    <tr><td><b>מסך הורים 👨‍👩‍👦</b></td><td>מוגן בשער כפל (רק להורים!) — דילוג/פתיחת שלבים, סטטיסטיקות דיוק לכל מיומנות, מהירות דיבור, בדיקת קול, איפוס</td></tr>
+    <tr><td><b>עוד</b></td><td>רצף 🔥 (סטרייק), התפרצות כוכבים בתשובה נכונה, XP ודרגת מאמן, מצעד מפלצות בבית, רעידת מסך בקלף אגדי</td></tr>
+    <tr><td><b>עולם 6: אי האגדות 🏝️</b></td><td>6 שלבים (31–36) של סיפורים ארוכים — 6 שורות, 2 שאלות הבנה על אותו סיפור. 4 סיפורים (היום של מאיה, הכלב שאבד, מסיבת יום ההולדת, הגינה של סבתא). תג "המספר הגדול" 🏆</td></tr>
+    <tr><td><b>פרסים אמיתיים 🎁</b></td><td>ההורה מגדיר במסך ההורים יעד (כוכבים/תגים/דרגה/קלפי זהב) ופרס אמיתי. הילד רואה פס התקדמות בבית, ובהגעה ליעד — מסך שובר פרס חגיגי. ההורה מסמן "נמסר" במסך ההורים</td></tr>
+    <tr><td><b>עולם 5: עמק הסיפורים 📚</b></td><td>6 שלבים חדשים (25–30): קריאת משפטים שלמים ← סידור מילים למשפט ← סיפורים קצרים (3 שורות, תמונה, כפתור הקראה לכל שורה, ושאלת הבנה). 14 משפטים, 6 סיפורים, תג "הסופר" 📖. כל הטקסטים הוקלטו בקול של הילה (320 קטעים סה"כ)</td></tr>
+    <tr><td><b>קול אנושי אמיתי 🎙️</b></td><td>244 קטעי דיבור הוקלטו מראש עם הקול הנוירלי he-IL-HilaNeural (edge-tts, חינם) ונשמרו ב-<code>audio/</code> (~3.3MB). המשחק מנגן אותם אופליין; משפטים מורכבים משורשרים מקטעים ("תפסת את" + שם מפלצת). אם קטע חסר — נפילה אוטומטית ל-TTS של הדפדפן. מהירות 🐢/🚶/🐇 דרך playbackRate. לחידוש ההקלטות: <code>uv run --with edge-tts python3 gen_audio.py</code></td></tr>
+  </table>
+
+  <h2 class="green">🎯 החלטות פדגוגיות (מותאם קשב + תקשורת)</h2>
+  <ul>
+    <li><b>סשנים קצרים:</b> שלב = 5 שאלות (~2 דקות) — מתאים לילד שזז כל הזמן.</li>
+    <li><b>אין כישלון:</b> טעות = ניעור עדין ו"נסה שוב". אחרי 2 טעויות התשובה הנכונה מהבהבת (רמז), כך שכל שאלה תמיד מסתיימת בהצלחה.</li>
+    <li><b>חיזוק מיידי:</b> כל תשובה נכונה = צליל + אנימציה + מחמאה בקול + פוקדור מתמלא.</li>
+    <li><b>לולאת התמכרות חיובית:</b> קריאה ⇐ תפיסת מפלצות ⇐ אלבום. שמות המפלצות מנוקדים — גם האלבום מתרגל קריאה.</li>
+    <li><b>שחזור שלבים:</b> אפשר לשחק שוב כל שלב שהושלם — כפילויות הופכות לכוכבים וקלפי זהב.</li>
+  </ul>
+
+  <h2 class="pink">🔧 בעיות שנפתרו בדרך</h2>
+  <table>
+    <tr><th>בעיה</th><th>פתרון</th></tr>
+    <tr><td>ID כפול של gradient ב-SVG כשאותה מפלצת מוצגת בשני מסכים — הצבע נשטף</td><td>מונה ייחודי גלובלי לכל רינדור (<code>svgUid</code>)</td></tr>
+    <tr><td>iOS חוסם קול לפני מגע ראשון</td><td>ה-AudioContext וההקראה מופעלים רק אחרי לחיצת "לשחק"</td></tr>
+    <tr><td>קלף שנפתח נשאר "פתוח" בפרס הבא</td><td>שכפול אלמנט ה-flip ואיפוס מאזינים בכל חבילה</td></tr>
+    <tr><td>ההקראה יצאה באנגלית ("question mark") — רשימת הקולות נטענת באיחור והמשחק נפל לקול ברירת מחדל</td><td>בחירת קול עברית (כרמית) מחדש ברגע הדיבור, ניקוי סימני פיסוק, ואם אין קול עברית — השתקה + באנר הסבר להורים במקום ג'יבריש</td></tr>
+    <tr><td>רצו קלפים "אמיתיים"</td><td>עיצוב TCG: מסגרת כסופה, ברק הולוגרפי, שורת התקפה ונזק + תמיכה בתמונות אישיות: <code>cards/1.png..24.png</code> מחליפות את הציור (המספר מופיע על כל קלף באלבום)</td></tr>
+  </table>
+
+  <h2 class="purple">📁 קבצים</h2>
+  <pre class="code">~/Desktop/milimon/
+├── index.html           ← המשחק (הכול בקובץ אחד — HTML+CSS+JS)
+├── cards/               ← שים כאן 1.png..24.png להחלפת ציורי הקלפים
+│   └── README.txt
+└── PROJECT_SUMMARY.html ← הקובץ הזה</pre>
+
+  <h2>⌨️ פקודות שימושיות</h2>
+  <pre class="code">open ~/Desktop/milimon/index.html        # לפתוח את המשחק
+python3 -m http.server 8642 --directory ~/Desktop/milimon   # לשרת ברשת הביתית (לאייפד)</pre>
+  <div class="box">📱 <b>לאייפד:</b> להריץ את פקודת השרת במק, ואז בספארי באייפד לגלוש אל <code>http://[IP-של-המק]:8642</code> — או פשוט לשלוח את הקובץ ב-AirDrop ולפתוח.</div>
+
+  <h2 class="orange">⏳ רעיונות להמשך</h2>
+  <ul>
+    <li><span class="warn">●</span> זיהוי דיבור — שהילד יקרא בקול והמשחק יבדוק (Web Speech Recognition, עברית עדיין לא אמינה לילדים).</li>
+    <li><span class="warn">●</span> הדפסת הקלפים שנתפסו — קלפים פיזיים כפרס שבועי.</li>
+    <li><span class="warn">●</span> משפטים קצרים אחרי שהמילים יושבות.</li>
+    <li><span class="info">●</span> אם הקול לא נשמע במק: הגדרות מערכת ← נגישות ← תוכן מוקרא ← להוריד קול עברית (כרמית).</li>
+  </ul>
+</div>
+</body>
+</html>
