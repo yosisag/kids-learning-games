@@ -284,47 +284,50 @@
   .starburst { position:fixed; z-index:60; pointer-events:none; font-size:24px; animation:burst .7s ease-out forwards; }
   @keyframes burst { from{transform:translate(0,0) scale(1); opacity:1} to{transform:translate(var(--dx),var(--dy)) scale(.4); opacity:0} }
 
-  /* ================= CARDS ================= */
+  /* ================= CARDS (authentic TCG anatomy) ================= */
   .card {
-    width:232px; border-radius:20px; padding:9px; position:relative;
-    background:linear-gradient(160deg,#9db6d8,#5e7ca3);
-    box-shadow:0 16px 32px rgba(0,0,0,.3);
+    width:250px; border-radius:16px; padding:10px; position:relative;
+    background:linear-gradient(160deg,#ffe97a,#d9a821 45%,#f5d451 70%,#c9992a);
+    box-shadow:0 3px 0 #8a6d14, 0 16px 32px rgba(0,0,0,.35);
   }
-  .card.rare { background:linear-gradient(160deg,#ffe680,#e0a72a,#ffd94d); }
-  .card.legendary { background:conic-gradient(from var(--a,0deg),#ff5959,#ffd23e,#7de07d,#5ec1ff,#a78bfa,#ff5959); animation:spinborder 3.5s linear infinite; }
-  @property --a { syntax:'<angle>'; initial-value:0deg; inherits:false; }
-  @keyframes spinborder { to { --a:360deg; } }
-  .card.golden { background:linear-gradient(160deg,#fff2b3,#ffc400,#fff2b3,#e8a400); }
-  .card .inner { background:linear-gradient(180deg,#fdfeff,#eef4fb); border-radius:14px; overflow:hidden; position:relative; }
+  .card.golden { background:linear-gradient(160deg,#fff6c4,#ffc400,#fff2b3,#e8a400); box-shadow:0 0 26px #ffc40077, 0 16px 32px rgba(0,0,0,.35); }
+  .card .inner { border-radius:10px; overflow:hidden; position:relative; padding:7px 8px 6px; background:linear-gradient(180deg,#fdfeff,#eef4fb); }
   .card.rare .inner::before, .card.legendary .inner::before, .card.golden .inner::before {
     content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
-    background:linear-gradient(115deg, transparent 32%, rgba(255,255,255,.45) 44%, rgba(150,220,255,.3) 50%, rgba(255,190,255,.25) 56%, transparent 68%);
+    background:linear-gradient(115deg, transparent 32%, rgba(255,255,255,.5) 44%, rgba(150,220,255,.32) 50%, rgba(255,190,255,.28) 56%, transparent 68%);
     background-size:300% 300%; animation:holo 3s linear infinite;
   }
   @keyframes holo { 0%{background-position:130% 0} 100%{background-position:-80% 0} }
-  .card .head { display:flex; justify-content:space-between; align-items:center; padding:8px 12px 4px; }
-  .card .cname { font-size:23px; font-weight:900; color:#1d2b52; }
-  .card .hp { font-size:16px; font-weight:900; color:#d63031; }
+  .card .head { display:flex; align-items:center; gap:6px; }
+  .card .stage { font-size:10px; font-weight:800; background:#fffef2; border:1px solid #c9b25a; border-radius:99px; padding:1px 8px; color:#6b5b1e; white-space:nowrap; }
+  .card .cname { font-size:20px; font-weight:900; color:#1d2b52; flex:1; }
+  .card .hp { font-size:16px; font-weight:900; color:#d63031; display:flex; align-items:center; gap:3px; white-space:nowrap; }
+  .card .hp small { font-size:9px; font-weight:800; align-self:flex-start; margin-top:2px; }
   .card .art {
-    margin:2px 10px; border-radius:12px; padding:6px; position:relative; display:flex; justify-content:center;
-    border:3px solid; border-image:linear-gradient(160deg,#f2f6fa,#aab8c9,#e8eef5,#93a3b8) 1;
-    box-shadow:inset 0 2px 8px rgba(0,0,0,.18);
+    margin:5px 1px 3px; position:relative; display:flex; justify-content:center;
+    border:4px solid #d8c26a; outline:1px solid #9a8433;
+    box-shadow:inset 0 2px 10px rgba(0,0,0,.25), 0 1px 0 #fff;
   }
-  .card .art svg { width:150px; height:150px; }
+  .card .art svg { width:180px; height:148px; }
+  .card.legendary .art { background:conic-gradient(from 210deg,#ffe1e1,#fff7cf,#e2ffe4,#dff2ff,#f3e2ff,#ffe1e1) !important; }
   .customart { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:2; }
-  .card .atk {
-    display:flex; align-items:center; gap:8px; margin:6px 12px 2px; padding:5px 12px;
-    background:linear-gradient(180deg,#f2f6fb,#e3eaf4); border-radius:10px;
-    font-weight:800; font-size:14px; color:#1d2b52; box-shadow:0 1px 2px rgba(0,0,0,.08);
+  .card .species {
+    font-size:9.5px; font-weight:700; color:#5a4a12; text-align:center; margin:2px 8px 3px;
+    background:linear-gradient(90deg,#f9edb9,#eed77e,#f9edb9); border:1px solid #d8c26a; border-radius:99px; padding:1px 8px;
   }
-  .card .atk .dmg { margin-right:auto; font-size:17px; font-weight:900; color:#d63031; }
-  .card .foot { display:flex; justify-content:space-between; align-items:center; padding:4px 12px 10px; }
-  .card .type { font-size:15px; font-weight:800; background:#ffffffcc; padding:2px 12px; border-radius:99px; box-shadow:0 2px 4px rgba(0,0,0,.12); }
-  .card .cnum { font-size:12px; font-weight:700; color:#8fa1c0; }
-  .card .cstars { font-size:16px; letter-spacing:1px; min-height:20px; }
+  .card .atk { display:flex; align-items:center; gap:7px; padding:5px 4px; font-weight:800; font-size:13.5px; color:#1d2b52; border-top:1px solid #d8c26a66; }
+  .card .atk .cost { font-size:13px; letter-spacing:-3px; min-width:32px; }
+  .card .atk .aname { flex:1; text-align:right; }
+  .card .atk .dmg { font-size:18px; font-weight:900; color:#1d2b52; }
+  .card .brow {
+    display:flex; justify-content:space-between; padding:4px 4px 2px; margin-top:2px;
+    font-size:9.5px; font-weight:800; color:#4a3f14; border-top:2px solid #d8c26a;
+  }
+  .card .cfoot { display:flex; justify-content:space-between; align-items:center; padding:3px 4px 0; font-size:8.5px; color:#8a7a3a; font-weight:700; }
+  .card .cstars { font-size:12px; letter-spacing:1px; }
   .card .crown { position:absolute; top:-20px; right:-8px; font-size:34px; transform:rotate(18deg); filter:drop-shadow(0 3px 3px rgba(0,0,0,.3)); z-index:5; }
   .card.unknown .inner { filter:grayscale(1) brightness(.6); }
-  .card.unknown { background:#5a6b84; }
+  .card.unknown { background:#5a6b84; box-shadow:0 16px 32px rgba(0,0,0,.3); }
   .qmark { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:60px; font-weight:900; color:#fff; z-index:6; text-shadow:0 3px 6px #000; }
 
   /* ================= PACK ================= */
@@ -336,7 +339,7 @@
   .flip.open .flipin { transform:rotateY(180deg); }
   .face { backface-visibility:hidden; -webkit-backface-visibility:hidden; }
   .face.back {
-    width:232px; height:340px; border-radius:20px;
+    width:250px; height:400px; border-radius:16px;
     background:linear-gradient(150deg,#4636a3,#7c3aed 45%,#4636a3);
     border:6px solid #ffd23e; box-shadow:0 0 46px #ffd23e88, 0 18px 34px rgba(0,0,0,.4);
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
@@ -366,10 +369,14 @@
   /* ================= ALBUM ================= */
   #album .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(152px,1fr)); gap:14px; width:100%; max-width:720px; padding-bottom:70px; }
   #album .card { width:100%; padding:6px; }
-  #album .card .art svg { width:100%; height:104px; }
-  #album .card .cname { font-size:16px; }
-  #album .card .atk { font-size:11px; margin:4px 8px 2px; padding:3px 8px; }
-  #album .card .atk .dmg { font-size:13px; }
+  #album .card .art svg { width:100%; height:100px; }
+  #album .card .cname { font-size:14px; }
+  #album .card .stage { font-size:8px; padding:0 5px; }
+  #album .card .hp { font-size:12px; }
+  #album .card .species, #album .card .atk.a2, #album .card .brow { display:none; }
+  #album .card .atk { font-size:10px; padding:3px 2px; }
+  #album .card .atk .dmg { font-size:12px; }
+  #album .card .cfoot { font-size:7.5px; }
   .albummeter { width:100%; max-width:720px; background:#ffffffc9; border-radius:99px; padding:6px; margin-bottom:14px; box-shadow:0 5px 12px rgba(30,60,120,.14); }
   .albummeter .fill { height:26px; border-radius:99px; background:linear-gradient(90deg,#ffd23e,#ff8a00); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:15px; color:#7a4d00; min-width:60px; transition:width .7s; }
 
@@ -426,7 +433,10 @@
   <div class="homebuddy" id="homeBuddy"></div>
   <div class="badgerow" id="badgeRow"></div>
   <button class="btn green huge" id="playBtn">▶ לְשַׂחֵק!</button>
-  <button class="btn blue small" id="albumBtn">🎴 הָאַלְבּוֹם שֶׁלִּי</button>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn blue small" id="albumBtn">🎴 הָאַלְבּוֹם שֶׁלִּי</button>
+    <button class="btn small" id="dojoBtn" style="background:linear-gradient(180deg,#c084fc,#7c3aed);box-shadow:0 6px 0 #55219f,0 10px 16px rgba(0,0,0,.18);">🥋 אִמּוּן אוֹ־אוּ</button>
+  </div>
   <div class="parade"><div class="strip" id="paradeStrip"></div></div>
 </div>
 
@@ -442,6 +452,7 @@
   <div class="topbar">
     <button class="iconbtn" data-goto="home">🏠</button>
     <div class="title">מַפַּת הַהַרְפַּתְקָה 🗺️</div>
+    <button class="iconbtn" id="dojoBtn2" title="אימון או-או">🥋</button>
     <button class="iconbtn" data-goto="album">🎴</button>
   </div>
   <div id="worlds" style="width:100%;display:flex;flex-direction:column;align-items:center;"></div>
@@ -837,11 +848,11 @@ const LONG_STORIES = [
 
 /* ---------- monsters ---------- */
 const TYPES = {
-  fire:     { c1: "#ffb26b", c2: "#ff5040", c3: "#b71c1c", icon: "🔥", label: "אֵשׁ",      atk: "נְשִׁיפַת אֵשׁ" },
-  water:    { c1: "#6fd3ff", c2: "#2d6cff", c3: "#0d3fa8", icon: "💧", label: "מַיִם",     atk: "סִילוֹן מַיִם" },
-  grass:    { c1: "#9bee9b", c2: "#2ea043", c3: "#14602a", icon: "🍃", label: "עֵשֶׂב",    atk: "עָלֶה חוֹתֵךְ" },
-  electric: { c1: "#ffe95e", c2: "#ffab00", c3: "#a86a00", icon: "⚡", label: "חַשְׁמַל",  atk: "מַכַּת בָּרָק" },
-  star:     { c1: "#e2c9ff", c2: "#7c3aed", c3: "#43119c", icon: "✨", label: "קֶסֶם",     atk: "אֲבַק כּוֹכָבִים" },
+  fire:     { c1: "#ffb26b", c2: "#ff5040", c3: "#b71c1c", icon: "🔥", label: "אֵשׁ",      atk: "נְשִׁיפַת אֵשׁ",    atk2: "לֶהָבָה גְּדוֹלָה",  wk: "💧", rs: "🍃" },
+  water:    { c1: "#6fd3ff", c2: "#2d6cff", c3: "#0d3fa8", icon: "💧", label: "מַיִם",     atk: "סִילוֹן מַיִם",     atk2: "גַּל עֲנָק",         wk: "⚡", rs: "🔥" },
+  grass:    { c1: "#9bee9b", c2: "#2ea043", c3: "#14602a", icon: "🍃", label: "עֵשֶׂב",    atk: "עָלֶה חוֹתֵךְ",     atk2: "שֹׁרֶשׁ לוֹפֵת",     wk: "🔥", rs: "💧" },
+  electric: { c1: "#ffe95e", c2: "#ffab00", c3: "#a86a00", icon: "⚡", label: "חַשְׁמַל",  atk: "מַכַּת בָּרָק",     atk2: "סוּפַת בְּרָקִים",   wk: "🍃", rs: "⚡" },
+  star:     { c1: "#e2c9ff", c2: "#7c3aed", c3: "#43119c", icon: "✨", label: "קֶסֶם",     atk: "אֲבַק כּוֹכָבִים",  atk2: "בְּרַק כּוֹכָבִים",  wk: "—",  rs: "✨" },
 };
 const MONSTERS = [
   { name: "לַהֲבִי",      type: "fire",     shape: 0, horns: 2, rarity: "rare" },
@@ -948,6 +959,9 @@ function cardHTML(m, opts) {
   const stars = Math.min(3, Math.max(0, count - 1));
   const golden = count >= 4;
   const dmg = m.rarity === "legendary" ? 50 : m.rarity === "rare" ? 30 : 20;
+  const raritySym = m.rarity === "legendary" ? "★" : m.rarity === "rare" ? "◆" : "●";
+  const height = (0.3 + (m.id % 7) * 0.1).toFixed(1);
+  const weight = 4 + (m.id * 3) % 20;
   const cls = ["card", m.rarity, golden ? "golden" : "", opts.unknown ? "unknown" : ""].join(" ");
   const customImg = noCustomArt.has(n) ? "" :
     `<img class="customart" alt="" src="cards/${n}.png" onerror="cardImgErr(this,${n})">`;
@@ -955,10 +969,17 @@ function cardHTML(m, opts) {
     ${golden && !opts.unknown ? `<div class="crown">👑</div>` : ""}
     ${opts.unknown ? `<div class="qmark">?</div>` : ""}
     <div class="inner">
-      <div class="head"><span class="cname">${opts.unknown ? "❓❓❓" : m.name}</span><span class="hp">HP ${m.hp} ❤</span></div>
-      <div class="art" style="background:radial-gradient(circle,${t.c1}55,${t.c2}33)">${monsterSVG(m)}${opts.unknown ? "" : customImg}</div>
-      <div class="atk"><span>${t.icon}${t.icon}</span><span>${t.atk}</span><span class="dmg">${dmg}</span></div>
-      <div class="foot"><span class="type">${t.icon} ${t.label}</span><span class="cnum">${n}/${MONSTERS.length}</span><span class="cstars">${"⭐".repeat(stars)}</span></div>
+      <div class="head">
+        <span class="stage">בְּסִיסִי</span>
+        <span class="cname">${opts.unknown ? "❓❓❓" : m.name}</span>
+        <span class="hp"><small>HP</small>${m.hp} ${t.icon}</span>
+      </div>
+      <div class="art" style="background:radial-gradient(circle at 50% 40%,${t.c1}66,${t.c2}44)">${monsterSVG(m)}${opts.unknown ? "" : customImg}</div>
+      <div class="species">מִילִימוֹן ${t.label} · גֹּבַהּ ${height} מ׳ · מִשְׁקָל ${weight} ק״ג</div>
+      <div class="atk"><span class="cost">${t.icon}${t.icon}</span><span class="aname">${t.atk}</span><span class="dmg">${dmg}</span></div>
+      <div class="atk a2"><span class="cost">${t.icon}${t.icon}✨</span><span class="aname">${t.atk2}</span><span class="dmg">${dmg + 20}</span></div>
+      <div class="brow"><span>חֻלְשָׁה ${t.wk} ×2</span><span>הִתְנַגְּדוּת ${t.rs} ‎-20</span><span>נְסִיגָה ⭐</span></div>
+      <div class="cfoot"><span>אִיּוּר: מִילִימוֹן סְטוּדִיוֹ 🎨</span><span class="cstars">${"⭐".repeat(stars)}</span><span>${n}/${MONSTERS.length} ${raritySym}</span></div>
     </div>
   </div>`;
 }
@@ -1021,7 +1042,7 @@ function levelSpec(i) {
   return { type: "lstory" };
 }
 const LEVEL_TAGS = { letter: "אוֹתִיּוֹת", syll: "הֲבָרוֹת", hear: "שׁוֹמְעִים", read: "קוֹרְאִים", build: "בּוֹנִים", mix: "אַלּוּפִים", sent: "מִשְׁפָּטִים", bsent: "מְסַדְּרִים", story: "סִפּוּר", lstory: "סִפּוּר גָּדוֹל" };
-const SKILL_NAMES = { letter: "זיהוי אותיות", syll: "הברות", hear: "שמיעת מילים", read: "קריאת מילים", build: "בניית מילים", mix: "שלבי אלופים", sent: "קריאת משפטים", bsent: "סידור משפטים", story: "הבנת סיפור", lstory: "סיפורים ארוכים" };
+const SKILL_NAMES = { letter: "זיהוי אותיות", syll: "הברות", vowels: "🥋 אימון חולם ושורוק", hear: "שמיעת מילים", read: "קריאת מילים", build: "בניית מילים", mix: "שלבי אלופים", sent: "קריאת משפטים", bsent: "סידור משפטים", story: "הבנת סיפור", lstory: "סיפורים ארוכים" };
 
 /* ---------- background ---------- */
 const THEME_PCLS = { "": ["✨","🎈"], "th-grass": ["🍃","🦋"], "th-water": ["💧","🫧"], "th-fire": ["🔥","✴️"], "th-star": ["✨","⭐"], "th-night": ["✨","⭐"], "th-story": ["📖","✏️"], "th-island": ["🌴","🫧"] };
@@ -1148,11 +1169,17 @@ function buddySay(text, mood) {
 function nextQuestion() {
   if (G.qIndex >= G.qTotal) { levelComplete(); return; }
   G.qMistakes = 0;
-  const spec = levelSpec(G.level);
-  let type = spec.type;
-  if (type === "mix") type = shuffle(["letter", "syll", "hear", "read", "build"])[0];
-  G.qType = type;
-  const q = { letter: qLetter, syll: qSyll, hear: qHear, read: qRead, build: qBuild, sent: qSent, bsent: qBuildSent, story: qStory, lstory: qLongStory }[type](spec.options || 3);
+  let q;
+  if (G.drill) {
+    G.qType = "vowels";
+    q = (G.qIndex % 4 === 3) ? qVowelWord() : qVowelDuel();
+  } else {
+    const spec = levelSpec(G.level);
+    let type = spec.type;
+    if (type === "mix") type = shuffle(["letter", "syll", "hear", "read", "build"])[0];
+    G.qType = type;
+    q = { letter: qLetter, syll: qSyll, hear: qHear, read: qRead, build: qBuild, sent: qSent, bsent: qBuildSent, story: qStory, lstory: qLongStory }[type](spec.options || 3);
+  }
   G.current = q;
   const area = $("qarea");
   area.innerHTML = "";
@@ -1231,7 +1258,14 @@ function qLetter(nOpts) {
   return { el, speak: sayIt };
 }
 function qSyll(nOpts) {
-  const target = SYLLS[Math.floor(Math.random() * SYLLS.length)];
+  // חולם ושורוק קשים לו — מגבירים את התדירות שלהם בתרגול הרגיל
+  let target;
+  if (Math.random() < 0.45) {
+    const c = CONS[Math.floor(Math.random() * CONS.length)];
+    target = c + (Math.random() < 0.5 ? "וֹ" : "וּ");
+  } else {
+    target = SYLLS[Math.floor(Math.random() * SYLLS.length)];
+  }
   const sameCons = SYLLS.filter(s => s !== target && s[0] === target[0]);
   const others = pick(sameCons.length >= nOpts - 1 ? sameCons : SYLLS.filter(s => s !== target), nOpts - 1);
   const opts = shuffle([target, ...others]);
@@ -1410,6 +1444,47 @@ function qStory() {
   wireChoices(el, btns, b => b.dataset.e === target.ok, []);
   return { el, speak: sayIt };
 }
+/* --- vowel dojo: focused cholam/shuruk minimal-pair drills --- */
+const VOWEL_WORDS = WORDS.filter(w => w.w.includes("וֹ") || w.w.includes("וּ"));
+function qVowelDuel() {
+  const c = CONS[Math.floor(Math.random() * CONS.length)];
+  const pair = [c + "וֹ", c + "וּ"];
+  const target = pair[Math.floor(Math.random() * 2)];
+  const el = document.createElement("div");
+  el.className = "qwrap";
+  el.innerHTML = `<div class="instr">🥋 אוֹ אוֹ אוּ — מָה שָׁמַעְתָּ?</div><button class="speakbig">🔊</button><div class="opts"></div>`;
+  const box = el.querySelector(".opts");
+  const btns = shuffle(pair).map(o => { const b = optButton(o); b.dataset.s = o; b.style.minWidth = "150px"; box.appendChild(b); return b; });
+  const sayIt = () => speak(target, { rate: 0.85 });
+  el.querySelector(".speakbig").addEventListener("click", sayIt);
+  wireChoices(el, btns, b => b.dataset.s === target, [target]);
+  return { el, speak: sayIt };
+}
+function qVowelWord() {
+  const target = VOWEL_WORDS[Math.floor(Math.random() * VOWEL_WORDS.length)];
+  const others = pick(VOWEL_WORDS.filter(w => w.w !== target.w), 2);
+  const opts = shuffle([target, ...others]);
+  const el = document.createElement("div");
+  el.className = "qwrap";
+  el.innerHTML = `<div class="instr">👂 אֵיפֹה כָּתוּב...</div><button class="speakbig">🔊</button><div class="opts"></div>`;
+  const box = el.querySelector(".opts");
+  const btns = opts.map(o => { const b = optButton(o.w, "word"); b.dataset.w = o.w; box.appendChild(b); return b; });
+  const sayIt = () => speak(target.w, { rate: 0.9 });
+  el.querySelector(".speakbig").addEventListener("click", sayIt);
+  wireChoices(el, btns, b => b.dataset.w === target.w, [target.w]);
+  return { el, speak: sayIt };
+}
+function startDrill() {
+  G = { drill: true, level: -1, qIndex: 0, mistakes: 0, streak: 0, qTotal: 8 };
+  setTheme("th-star");
+  showScreen("game");
+  renderBuddy();
+  updateStreak();
+  renderMeter();
+  speak("מִתְאַמְּנִים עַל אוֹ וְאוּ! הַקְשִׁיבוּ טוֹב טוֹב");
+  setTimeout(nextQuestion, 2600);
+}
+
 /* --- long story: 6 lines, two comprehension questions on the same story --- */
 function qLongStory() {
   const target = G.story;
@@ -1438,6 +1513,19 @@ function qLongStory() {
 /* ---------- level complete → pack (→ badge) ---------- */
 function levelComplete() {
   const stars = G.mistakes === 0 ? 3 : G.mistakes === 1 ? 2 : 1;
+  if (G.drill) { // dojo: card reward, no level progression
+    let mid = REWARD_ORDER[Math.floor(Math.random() * REWARD_ORDER.length)];
+    const uncaught = MONSTERS.filter(m => !S.cards[m.id]);
+    if (uncaught.length && Math.random() < 0.6) mid = uncaught[Math.floor(Math.random() * uncaught.length)].id;
+    S.cards[mid] = (S.cards[mid] || 0) + 1;
+    S.xp += 5;
+    save();
+    pendingBadge = null;
+    pendingPrize = checkPrizes();
+    sfx.fanfare();
+    openPack(MONSTERS[mid], stars);
+    return;
+  }
   const prev = S.stars[G.level] || 0;
   const firstTime = !prev;
   if (stars > prev) S.stars[G.level] = stars;
@@ -1743,6 +1831,8 @@ $("playBtn").addEventListener("click", () => {
   }
 });
 $("albumBtn").addEventListener("click", () => { sfx.click(); showScreen("album"); });
+$("dojoBtn").addEventListener("click", () => { ac(); sfx.click(); startDrill(); });
+$("dojoBtn2").addEventListener("click", () => { ac(); sfx.click(); startDrill(); });
 $("muteBtn").addEventListener("click", () => {
   S.muted = !S.muted; save();
   $("muteBtn").textContent = S.muted ? "🔇" : "🔊";
