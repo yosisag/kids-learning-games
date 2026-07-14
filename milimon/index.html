@@ -283,6 +283,18 @@
   @keyframes sadwob { 0%,100%{transform:rotate(0)} 30%{transform:rotate(-9deg)} 70%{transform:rotate(9deg)} }
   .starburst { position:fixed; z-index:60; pointer-events:none; font-size:24px; animation:burst .7s ease-out forwards; }
   @keyframes burst { from{transform:translate(0,0) scale(1); opacity:1} to{transform:translate(var(--dx),var(--dy)) scale(.4); opacity:0} }
+  /* word sprint */
+  .sprintclock {
+    font-size:28px; font-weight:900; color:#ff4d00; background:#fff; border-radius:99px; padding:3px 26px;
+    box-shadow:0 5px 0 #c9d6ea, 0 8px 14px rgba(0,0,0,.15); font-variant-numeric:tabular-nums;
+  }
+  .sprintclock.low { color:#fff; background:#ff3d3d; animation:tagjump .5s infinite; }
+  .sprintscore { position:fixed; top:86px; right:14px; z-index:6; font-size:21px; font-weight:900; color:#1a7736;
+    background:#fff; border-radius:99px; padding:6px 16px; box-shadow:0 5px 12px rgba(0,0,0,.15); }
+  .sprintend { display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; }
+  .sprintend .bigscore { font-size:88px; font-weight:900; color:#ff8a00; text-shadow:0 4px 0 #b35c00, 0 10px 20px rgba(0,0,0,.2); line-height:1; }
+  .sprintend .rec { font-size:22px; font-weight:900; color:#1d2b52; background:#fff; border-radius:99px; padding:8px 26px; box-shadow:0 6px 14px rgba(30,60,120,.16); }
+  .sprintend .newrec { background:linear-gradient(90deg,#ffd23e,#ff8a00); color:#7a3c00; animation:poppy 1s infinite; }
 
   /* ================= CARDS (authentic TCG anatomy) ================= */
   .card {
@@ -436,6 +448,7 @@
   <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
     <button class="btn blue small" id="albumBtn">🎴 הָאַלְבּוֹם שֶׁלִּי</button>
     <button class="btn small" id="dojoBtn" style="background:linear-gradient(180deg,#c084fc,#7c3aed);box-shadow:0 6px 0 #55219f,0 10px 16px rgba(0,0,0,.18);">🥋 אִמּוּן אוֹ־אוּ</button>
+    <button class="btn small" id="sprintBtn" style="background:linear-gradient(180deg,#ff9d66,#ff4d00);box-shadow:0 6px 0 #b33500,0 10px 16px rgba(0,0,0,.18);">🏁 מֵרוֹץ מִלִּים</button>
   </div>
   <div class="parade"><div class="strip" id="paradeStrip"></div></div>
 </div>
@@ -452,6 +465,7 @@
   <div class="topbar">
     <button class="iconbtn" data-goto="home">🏠</button>
     <div class="title">מַפַּת הַהַרְפַּתְקָה 🗺️</div>
+    <button class="iconbtn" id="sprintBtn2" title="מרוץ מילים">🏁</button>
     <button class="iconbtn" id="dojoBtn2" title="אימון או-או">🥋</button>
     <button class="iconbtn" data-goto="album">🎴</button>
   </div>
@@ -540,6 +554,8 @@
         <option value="badges">🏅 תגים</option>
         <option value="level">🎖 דרגת מאמן</option>
         <option value="gold">👑 קלפי זהב</option>
+        <option value="sprint">🏁 שיא מרוץ מילים</option>
+        <option value="days">🔥 ימים ברציפות</option>
       </select>
       <input id="przTarget" class="pinput" type="number" min="1" style="width:84px;" placeholder="יעד">
       <button class="btn green small" id="przAdd">הוסף</button>
@@ -783,6 +799,35 @@ const WORDS = [
   { w: "לֵב",        e: "❤️" },
   { w: "נַעַל",      e: "👟", s: ["נַ", "עַל"] },
   { w: "כּוֹבַע",    e: "🧢", s: ["כּוֹ", "בַע"] },
+  { w: "חָלָב",      e: "🥛" },
+  { w: "לֶחֶם",      e: "🍞" },
+  { w: "כִּסֵּא",    e: "🪑" },
+  { w: "מִטָּה",     e: "🛏️" },
+  { w: "דֶּלֶת",     e: "🚪" },
+  { w: "מַפְתֵּחַ",  e: "🗝️" },
+  { w: "בַּלּוֹן",   e: "🎈" },
+  { w: "מַתָּנָה",   e: "🎁" },
+  { w: "גֶּשֶׁם",    e: "🌧️" },
+  { w: "שֶׁלֶג",     e: "❄️" },
+  { w: "עָנָן",      e: "☁️" },
+  { w: "יָם",        e: "🌊" },
+  { w: "הַר",        e: "⛰️" },
+  { w: "אוֹטוֹבּוּס", e: "🚌" },
+  { w: "אוֹפַנַּיִם", e: "🚲" },
+  { w: "טֶלֶפוֹן",   e: "📱" },
+  { w: "שָׁעוֹן",    e: "⌚" },
+  { w: "נֵר",        e: "🕯️" },
+  { w: "בֵּיצָה",    e: "🥚" },
+  { w: "גְּבִינָה",  e: "🧀" },
+  { w: "תּוּת",      e: "🍓" },
+  { w: "אֲבַטִּיחַ", e: "🍉" },
+  { w: "גֶּזֶר",     e: "🥕" },
+  { w: "פָּרָה",     e: "🐄" },
+  { w: "כֶּבֶשׂ",    e: "🐑" },
+  { w: "בַּרְוָז",   e: "🦆" },
+  { w: "יַנְשׁוּף",  e: "🦉" },
+  { w: "שׁוּעָל",    e: "🦊" },
+  { w: "קִפּוֹד",    e: "🦔" },
 ];
 const BUILD_WORDS = WORDS.filter(w => w.s && w.s.length >= 2);
 
@@ -974,7 +1019,10 @@ function cardHTML(m, opts) {
         <span class="cname">${opts.unknown ? "❓❓❓" : m.name}</span>
         <span class="hp"><small>HP</small>${m.hp} ${t.icon}</span>
       </div>
-      <div class="art" style="background:radial-gradient(circle at 50% 40%,${t.c1}66,${t.c2}44)">${monsterSVG(m)}${opts.unknown ? "" : customImg}</div>
+      <div class="art" style="background:
+        radial-gradient(circle at 50% 38%, #ffffffcc 0%, #ffffff22 22%, transparent 45%),
+        repeating-conic-gradient(from 8deg at 50% 38%, ${t.c1}55 0deg 9deg, transparent 9deg 22deg),
+        linear-gradient(180deg, ${t.c1}44 0%, ${t.c1}66 55%, ${t.c2}77 100%)">${monsterSVG(m)}${opts.unknown ? "" : customImg}</div>
       <div class="species">מִילִימוֹן ${t.label} · גֹּבַהּ ${height} מ׳ · מִשְׁקָל ${weight} ק״ג</div>
       <div class="atk"><span class="cost">${t.icon}${t.icon}</span><span class="aname">${t.atk}</span><span class="dmg">${dmg}</span></div>
       <div class="atk a2"><span class="cost">${t.icon}${t.icon}✨</span><span class="aname">${t.atk2}</span><span class="dmg">${dmg + 20}</span></div>
@@ -1042,7 +1090,7 @@ function levelSpec(i) {
   return { type: "lstory" };
 }
 const LEVEL_TAGS = { letter: "אוֹתִיּוֹת", syll: "הֲבָרוֹת", hear: "שׁוֹמְעִים", read: "קוֹרְאִים", build: "בּוֹנִים", mix: "אַלּוּפִים", sent: "מִשְׁפָּטִים", bsent: "מְסַדְּרִים", story: "סִפּוּר", lstory: "סִפּוּר גָּדוֹל" };
-const SKILL_NAMES = { letter: "זיהוי אותיות", syll: "הברות", vowels: "🥋 אימון חולם ושורוק", hear: "שמיעת מילים", read: "קריאת מילים", build: "בניית מילים", mix: "שלבי אלופים", sent: "קריאת משפטים", bsent: "סידור משפטים", story: "הבנת סיפור", lstory: "סיפורים ארוכים" };
+const SKILL_NAMES = { letter: "זיהוי אותיות", syll: "הברות", vowels: "🥋 אימון חולם ושורוק", sprint: "🏁 מרוץ מילים (שטף)", hear: "שמיעת מילים", read: "קריאת מילים", build: "בניית מילים", mix: "שלבי אלופים", sent: "קריאת משפטים", bsent: "סידור משפטים", story: "הבנת סיפור", lstory: "סיפורים ארוכים" };
 
 /* ---------- background ---------- */
 const THEME_PCLS = { "": ["✨","🎈"], "th-grass": ["🍃","🦋"], "th-water": ["💧","🫧"], "th-fire": ["🔥","✴️"], "th-star": ["✨","⭐"], "th-night": ["✨","⭐"], "th-story": ["📖","✏️"], "th-island": ["🌴","🫧"] };
@@ -1100,12 +1148,14 @@ let pendingBadge = null;
 let pendingPrize = null;
 
 /* ---------- real prizes ---------- */
-const METRIC_META = { stars: { icon: "⭐", name: "כּוֹכָבִים" }, badges: { icon: "🏅", name: "תָּגִים" }, level: { icon: "🎖", name: "דַּרְגָּה" }, gold: { icon: "👑", name: "קְלָפֵי זָהָב" } };
+const METRIC_META = { stars: { icon: "⭐", name: "כּוֹכָבִים" }, badges: { icon: "🏅", name: "תָּגִים" }, level: { icon: "🎖", name: "דַּרְגָּה" }, gold: { icon: "👑", name: "קְלָפֵי זָהָב" }, sprint: { icon: "🏁", name: "שִׂיא מֵרוֹץ" }, days: { icon: "🔥", name: "יָמִים בִּרְצִיפוּת" } };
 function metricValue(m) {
   if (m === "stars")  return Object.values(S.stars).reduce((a, b) => a + b, 0);
   if (m === "badges") return S.badges.length;
   if (m === "level")  return Math.floor(S.xp / 30) + 1;
   if (m === "gold")   return MONSTERS.filter(x => (S.cards[x.id] || 0) >= 4).length;
+  if (m === "sprint") return S.sprintBest || 0;
+  if (m === "days")   return S.dayStreak || 0;
   return 0;
 }
 function checkPrizes() {
@@ -1485,6 +1535,111 @@ function startDrill() {
   setTimeout(nextQuestion, 2600);
 }
 
+/* --- word sprint: 60-second fluency race, silent fast reading --- */
+let sprintInt = null;
+function startSprint() {
+  G = { sprint: true, level: -1, qIndex: 0, qTotal: Infinity, mistakes: 0, streak: 0, score: 0, over: false };
+  setTheme("th-fire");
+  showScreen("game");
+  renderBuddy();
+  updateStreak();
+  $("meter").innerHTML = `<div class="sprintclock" id="sprintClock">60</div>`;
+  $("qarea").innerHTML = `<div class="instr" style="font-size:34px;">🏁 קְרָא כַּמָּה שֶׁיּוֹתֵר מַהֵר!</div>`;
+  speak("מוּכָנִים? לִקְרֹא כַּמָּה שֶׁיּוֹתֵר מַהֵר! צֵא!");
+  let left = 60;
+  clearInterval(sprintInt);
+  setTimeout(() => {
+    if (!G || !G.sprint || G.over) return;
+    sprintNext();
+    sprintInt = setInterval(() => {
+      left--;
+      const c = $("sprintClock");
+      if (c) { c.textContent = left; if (left <= 10) c.classList.add("low"); }
+      if (left <= 0) endSprint();
+    }, 1000);
+  }, 2400);
+}
+function sprintNext() {
+  const target = WORDS[Math.floor(Math.random() * WORDS.length)];
+  const others = pick(WORDS.filter(w => w.w !== target.w), 2);
+  const el = document.createElement("div");
+  el.className = "qwrap";
+  el.innerHTML = `<div class="bigword" style="font-size:min(16vw,72px);">${target.w}</div><div class="opts"></div>`;
+  const box = el.querySelector(".opts");
+  shuffle([target, ...others]).forEach(o => {
+    const b = optButton(o.e, "pic");
+    b.addEventListener("click", ev => {
+      if (G.over || el.dataset.done) return;
+      if (o.w === target.w) {
+        el.dataset.done = "1";
+        G.score++;
+        const sc = $("sprintScore"); if (sc) sc.textContent = "✓ " + G.score;
+        const r = b.getBoundingClientRect();
+        starburst(r.left + r.width / 2, r.top + r.height / 2);
+        sfx.ballfill();
+        setTimeout(sprintNext, 250);
+      } else {
+        b.classList.add("wrongshake");
+        setTimeout(() => b.classList.remove("wrongshake"), 400);
+        sfx.wrong();
+        G.mistakes++;
+      }
+    });
+    box.appendChild(b);
+  });
+  const area = $("qarea");
+  area.innerHTML = `<div class="sprintscore" id="sprintScore">✓ ${G.score}</div>`;
+  area.appendChild(el);
+}
+function endSprint() {
+  if (!G || G.over) return;
+  G.over = true;
+  clearInterval(sprintInt);
+  if (!S.stats.sprint) S.stats.sprint = { ok: 0, tries: 0 };
+  S.stats.sprint.ok += G.score;
+  S.stats.sprint.tries += G.score + G.mistakes;
+  const newRec = G.score > (S.sprintBest || 0);
+  if (newRec) S.sprintBest = G.score;
+  S.xp += G.score;
+  markDailyPlay();
+  save();
+  sfx.fanfare();
+  if (newRec) confetti();
+  const area = $("qarea");
+  area.innerHTML = `<div class="sprintend">
+    <div class="instr">⏱️ הַזְּמַן נִגְמַר!</div>
+    <div class="bigscore">${G.score}</div>
+    <div class="instr" style="font-size:22px;">מִלִּים בְּדַקָּה!</div>
+    <div class="rec ${newRec ? "newrec" : ""}">${newRec ? "🏆 שִׂיא חָדָשׁ!" : "🏁 הַשִּׂיא שֶׁלְּךָ: " + (S.sprintBest || 0)}</div>
+    <button class="btn green" id="sprintDone">${G.score >= 5 ? "לְקַבֵּל פְּרָס! 🎁" : "לְהַמְשִׁיךְ ⬅"}</button>
+  </div>`;
+  speak(newRec ? "שִׂיא חָדָשׁ! אַתָּה טִיל!" : "הַזְּמַן נִגְמַר! כָּל הַכָּבוֹד!");
+  $("sprintDone").addEventListener("click", () => {
+    sfx.click();
+    if (G.score >= 5) {
+      let mid = REWARD_ORDER[Math.floor(Math.random() * REWARD_ORDER.length)];
+      const uncaught = MONSTERS.filter(m => !S.cards[m.id]);
+      if (uncaught.length && Math.random() < 0.6) mid = uncaught[Math.floor(Math.random() * uncaught.length)].id;
+      S.cards[mid] = (S.cards[mid] || 0) + 1;
+      save();
+      pendingBadge = null;
+      pendingPrize = checkPrizes();
+      openPack(MONSTERS[mid], 3);
+    } else showScreen("map");
+  });
+}
+
+/* --- daily play streak --- */
+function dstr(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function markDailyPlay() {
+  const t = dstr(new Date());
+  if (S.lastDay === t) return;
+  const ys = dstr(new Date(Date.now() - 864e5));
+  S.dayStreak = (S.lastDay === ys) ? (S.dayStreak || 0) + 1 : 1;
+  S.lastDay = t;
+  save();
+}
+
 /* --- long story: 6 lines, two comprehension questions on the same story --- */
 function qLongStory() {
   const target = G.story;
@@ -1512,6 +1667,7 @@ function qLongStory() {
 
 /* ---------- level complete → pack (→ badge) ---------- */
 function levelComplete() {
+  markDailyPlay();
   const stars = G.mistakes === 0 ? 3 : G.mistakes === 1 ? 2 : 1;
   if (G.drill) { // dojo: card reward, no level progression
     let mid = REWARD_ORDER[Math.floor(Math.random() * REWARD_ORDER.length)];
@@ -1612,7 +1768,9 @@ function renderHome() {
   const caught = Object.keys(S.cards).length;
   const lvl = Math.floor(S.xp / 30) + 1;
   const pct = Math.round((S.xp % 30) / 30 * 100);
-  $("profileChip").innerHTML = `<span>🏅 מְאַמֵּן דַּרְגָּה ${lvl}</span><div class="xpbar"><i style="width:${pct}%"></i></div><span>🎴 ${caught}/${MONSTERS.length}</span>`;
+  const streakBit = (S.dayStreak || 0) >= 2 ? `<span>🔥 ${S.dayStreak} יָמִים</span>` : "";
+  const recBit = S.sprintBest ? `<span>🏁 שִׂיא ${S.sprintBest}</span>` : "";
+  $("profileChip").innerHTML = `<span>🏅 מְאַמֵּן דַּרְגָּה ${lvl}</span><div class="xpbar"><i style="width:${pct}%"></i></div><span>🎴 ${caught}/${MONSTERS.length}</span>${streakBit}${recBit}`;
   // prize chip
   const chip = $("prizeChip");
   const waiting = (S.prizes || []).find(p => p.earned && !p.given);
@@ -1818,7 +1976,7 @@ $("resetBtn").addEventListener("click", () => {
 
 /* ---------- wiring ---------- */
 document.querySelectorAll("[data-goto]").forEach(b =>
-  b.addEventListener("click", () => { sfx.click(); silence(); showScreen(b.dataset.goto); }));
+  b.addEventListener("click", () => { sfx.click(); silence(); clearInterval(sprintInt); if (G) G.over = true; showScreen(b.dataset.goto); }));
 $("playBtn").addEventListener("click", () => {
   ac(); sfx.click();
   if (S.buddy == null) {
@@ -1833,6 +1991,8 @@ $("playBtn").addEventListener("click", () => {
 $("albumBtn").addEventListener("click", () => { sfx.click(); showScreen("album"); });
 $("dojoBtn").addEventListener("click", () => { ac(); sfx.click(); startDrill(); });
 $("dojoBtn2").addEventListener("click", () => { ac(); sfx.click(); startDrill(); });
+$("sprintBtn").addEventListener("click", () => { ac(); sfx.click(); startSprint(); });
+$("sprintBtn2").addEventListener("click", () => { ac(); sfx.click(); startSprint(); });
 $("muteBtn").addEventListener("click", () => {
   S.muted = !S.muted; save();
   $("muteBtn").textContent = S.muted ? "🔇" : "🔊";

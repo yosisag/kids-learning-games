@@ -1,3 +1,8 @@
 .DS_Store
 *.pyc
 __pycache__/
+# personal card photos stay local — never publish them to the public site
+milimon/cards/*.png
+milimon/cards/*.jpg
+milimon/cards/*.jpeg
+milimon/cards/*.webp
