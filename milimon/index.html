@@ -1222,7 +1222,7 @@ function nextQuestion() {
   let q;
   if (G.drill) {
     G.qType = "vowels";
-    q = (G.qIndex % 4 === 3) ? qVowelWord() : qVowelDuel();
+    q = (G.qIndex % 4 === 3) ? qVowelWord() : qVowelDuel(G.qIndex >= 8 ? 3 : 2);
   } else {
     const spec = levelSpec(G.level);
     let type = spec.type;
@@ -1283,7 +1283,7 @@ function onCorrectAnswer(extraParts) {
   updateStreak();
   if (G.streak >= 3) sfx.streak();
   buddySay(CHEERS[Math.floor(Math.random() * CHEERS.length)], "cheer");
-  const praise = ["כָּל הַכָּבוֹד", "מְעוּלֶה", "וָואוּ אַלּוּף", "בְּדִיּוּק", "מַדְהִים"];
+  const praise = ["כֹּל הַכָּבוֹד", "מְעוּלֶה", "וָואוּ אַלּוּף", "בְּדִיּוּק", "מַדְהִים"]; // כ' בחולם — הגייה נכונה בהקראה
   const parts = [praise[Math.floor(Math.random() * praise.length)]].concat(extraParts || []);
   setTimeout(() => speakSeq(parts), 250);
   G.qIndex++;
@@ -1496,15 +1496,17 @@ function qStory() {
 }
 /* --- vowel dojo: focused cholam/shuruk minimal-pair drills --- */
 const VOWEL_WORDS = WORDS.filter(w => w.w.includes("וֹ") || w.w.includes("וּ"));
-function qVowelDuel() {
+function qVowelDuel(nOpts) {
   const c = CONS[Math.floor(Math.random() * CONS.length)];
   const pair = [c + "וֹ", c + "וּ"];
   const target = pair[Math.floor(Math.random() * 2)];
+  let opts = pair.slice();
+  if (nOpts === 3) opts.push(c + VOWELS[Math.floor(Math.random() * VOWELS.length)]); // harder: a third distractor vowel
   const el = document.createElement("div");
   el.className = "qwrap";
   el.innerHTML = `<div class="instr">🥋 אוֹ אוֹ אוּ — מָה שָׁמַעְתָּ?</div><button class="speakbig">🔊</button><div class="opts"></div>`;
   const box = el.querySelector(".opts");
-  const btns = shuffle(pair).map(o => { const b = optButton(o); b.dataset.s = o; b.style.minWidth = "150px"; box.appendChild(b); return b; });
+  const btns = shuffle(opts).map(o => { const b = optButton(o); b.dataset.s = o; b.style.minWidth = "150px"; box.appendChild(b); return b; });
   const sayIt = () => speak(target, { rate: 0.85 });
   el.querySelector(".speakbig").addEventListener("click", sayIt);
   wireChoices(el, btns, b => b.dataset.s === target, [target]);
@@ -1525,7 +1527,7 @@ function qVowelWord() {
   return { el, speak: sayIt };
 }
 function startDrill() {
-  G = { drill: true, level: -1, qIndex: 0, mistakes: 0, streak: 0, qTotal: 8 };
+  G = { drill: true, level: -1, qIndex: 0, mistakes: 0, streak: 0, qTotal: 14 };
   setTheme("th-star");
   showScreen("game");
   renderBuddy();
@@ -1613,7 +1615,7 @@ function endSprint() {
     <div class="rec ${newRec ? "newrec" : ""}">${newRec ? "🏆 שִׂיא חָדָשׁ!" : "🏁 הַשִּׂיא שֶׁלְּךָ: " + (S.sprintBest || 0)}</div>
     <button class="btn green" id="sprintDone">${G.score >= 5 ? "לְקַבֵּל פְּרָס! 🎁" : "לְהַמְשִׁיךְ ⬅"}</button>
   </div>`;
-  speak(newRec ? "שִׂיא חָדָשׁ! אַתָּה טִיל!" : "הַזְּמַן נִגְמַר! כָּל הַכָּבוֹד!");
+  speak(newRec ? "שִׂיא חָדָשׁ! אַתָּה טִיל!" : "הַזְּמַן נִגְמַר! כֹּל הַכָּבוֹד!");
   $("sprintDone").addEventListener("click", () => {
     sfx.click();
     if (G.score >= 5) {
